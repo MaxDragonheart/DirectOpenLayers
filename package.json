@@ -1,0 +1,28 @@
+{
+  "name": "directopenlayers",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaxDragonheart/DirectOpenLayers.git"
+  },
+  "author": "\"Massimiliano Moraca\"",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MaxDragonheart/DirectOpenLayers/issues"
+  },
+  "homepage": "https://github.com/MaxDragonheart/DirectOpenLayers#readme",
+  "devDependencies": {
+    "css-loader": "^5.0.1",
+    "style-loader": "^2.0.0",
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.3.0"
+  },
+  "dependencies": {
+    "ol": "^6.4.3"
+  }
+}
