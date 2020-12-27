@@ -1,0 +1,198 @@
+/* Custom CSS library for styling maps
+based on OpenLayers 6 */
+/* INDEX */
+/* 1 - Generic customizations */
+/* 2 - Generic Control */
+/* 3 - Geolocation */
+/* 4 - Zoom */
+/* 5 - Scale line */
+/* 6 - Geocoder */
+/* 7 - Attribution */
+/* 8 - WMS Legend */
+/* 9 - Full Screen */
+/* 10 - Draw */
+/* 11 - Show/Hide */
+
+/* ######################## */
+/* 1 - Generic customizations */
+.map-container {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 600px;
+}
+
+/* 2 - Generic Control */
+.ol-control {
+  background-color: inherit !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  z-index: 1 !important;
+}
+
+/* 3 - Geolocation */
+/* .geolocation-position, .custom-geolocation {
+  width: 30px !important;
+  height: 30px !important;
+  top: 65px !important;
+  left: 0 !important;
+}
+.custom-geolocation {
+  padding: 2px !important;
+  content: url("../images/map_icons/gps.svg");
+  background-color: rgba(2, 195, 154, 1) !important;
+}
+.custom-geolocation:hover {
+  background-color: rgba(0, 168, 150, 1) !important;
+  padding: 0 !important;
+} */
+
+/* 4 - Zoom */
+.ol-zoom, .ol-zoom-in, .ol-zoom-out {
+  box-shadow: 5px 5px 8px 4px rgba(0, 0, 0, 0.2);
+  border-radius: 0 !important;
+  width: 30px !important;
+  margin: 0 !important;
+  left: 0 !important;
+  top: 0 !important;
+}
+.ol-zoom-in, .ol-zoom-out {
+  padding: 2px !important;
+  height: 30px !important;
+  background-color: rgba(2, 195, 154, 1) !important;
+}
+.ol-zoom-in:hover, .ol-zoom-out:hover {
+  background-color: rgba(0, 168, 150, 1) !important;
+}
+.ol-zoom-in {
+  /* background-image :url("../images/map_icons/zoom-in.svg"); */
+}
+.ol-zoom-out {
+  /* background-image :url("../images/map_icons/zoom-out.svg"); */
+}
+
+/* 5 - Scale line */
+.ol-scale-line {
+  box-shadow: 5px -5px 8px 4px rgba(0, 0, 0, 0.2);
+  bottom: 22px !important;
+  left: 0 !important;
+  background-color: rgba(2, 195, 154, 1) !important;
+  border-radius: 0 !important;
+}
+.ol-scale-line-inner {
+  margin: 0 !important;
+}
+
+/* 6 - Geocoder */
+/* .ol-geocoder.gcd-gl-container {
+  top: 100px !important;
+  left: 0 !important;
+}
+.ol-geocoder {
+
+}
+.gcd-gl-control {
+  width: 30px !important;
+  height: 30px !important;
+}
+.gcd-gl-expanded {
+  width: 300px !important;
+  height: 50px !important;
+}
+.gcd-gl-btn {
+  background-image: url("../images/map_icons/map-search.png") !important;
+  width: 30px !important;
+  height: 30px !important;
+  background-color: rgba(2, 195, 154, 1) !important;
+}
+.gcd-gl-btn:hover {
+  background-color: rgba(0, 168, 150, 1) !important;
+} */
+
+/* 7 - Attribution */
+.ol-attribution button {
+  background-color: inherit !important;
+}
+.ol-attribution {
+  box-shadow: 5px -5px 8px 4px rgba(0, 0, 0, 0.2);
+  bottom: 0 !important;
+  left: 0 !important;
+  right: auto !important;
+  text-align: left !important;
+  background-color: rgba(2, 195, 154, 1) !important;
+  border-radius: 0 !important;
+}
+.ol-attribution:hover {
+  background-color: rgba(0, 168, 150, 1) !important;
+}
+
+/* 8 - WMS Legend */
+.legend-contents {
+  background-color: rgba(255, 255, 255, 1.0);
+  position: absolute;
+  display: flex;
+  z-index: 99;
+  right: 2%;
+  bottom: 5%;
+  padding: 5px;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 10px;
+}
+.legend-colormap {
+  width: 250px;
+  height: 10px;
+  display: block;
+  float: left;
+}
+.legend-info {
+  padding: 2px;
+}
+.legend-colorbackgroud {
+  width: 100px;
+  height: 15px;
+}
+
+/* 9 - Full Screen */
+.ol-full-screen, .ol-full-screen-false, .ol-full-screen-true {
+  box-shadow: -5px 5px 8px 4px rgba(0, 0, 0, 0.2);
+  background-color: rgba(2, 195, 154, 1) !important;
+  width: 30px !important;
+  height: 30px !important;
+  border-radius: 0 !important;
+  right: 0 !important;
+  top: 0 !important;
+}
+.ol-full-screen:hover {
+  background-color: rgba(0, 168, 150, 1) !important;
+}
+
+/* 10 - Draw */
+.surface-container {
+  background-color: rgba(255, 204, 51, 0.5);
+  position: absolute;
+  display: flex;
+  z-index: 99;
+  right: 50%;
+  bottom: 5%;
+  padding: 5px;
+  border: 1px dotted rgba(255, 0, 0, 1.0);
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 5px;
+  text-align: center;
+  font-size: 10px;
+}
+.surface-result {
+  color: rgba(255, 0, 0, 1.0);
+  padding: 0;
+  margin: 0;
+}
+
+/* 11 - Show/Hide */
+.hidden {
+  display: none;
+}
+.show {
+  display: block;
+}
