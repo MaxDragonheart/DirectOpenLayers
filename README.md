@@ -38,6 +38,9 @@ As example, below the comparison between quick start from OpenLayers and DirectO
       const osm = basemap.createOSMStandard();
       map.addLayer(osm);
 
+[DirectOpenLayers](src/directopenlayers.js) now is a beta version. His [license](LICENSE) is inheritaded from OL.
+Who would like to contribute to the maintance of this library is welcome :) 
+
 
 ## Dependencies
 
