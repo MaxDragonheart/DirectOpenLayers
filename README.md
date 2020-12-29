@@ -44,6 +44,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 ## Example
 
 - [Quick Start](src/quick-start/quick-start.md)
+- [Full Screen and Scale Line](src/fullscreen-scaleline/fullscreen-scaleline.md)
 
 ## Dependencies
 

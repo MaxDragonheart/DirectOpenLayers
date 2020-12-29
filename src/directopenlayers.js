@@ -5,6 +5,8 @@ import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
 import XYZ from 'ol/source/XYZ';
 import {fromLonLat} from 'ol/proj';
+import ScaleLine from 'ol/control/ScaleLine';
+import FullScreen from 'ol/control/FullScreen';
 
 
 
@@ -58,7 +60,7 @@ export function BaseMapLayer(baseMapName) {
   return {
 
     'createEmpty': function() {
-      const empty = new ol.layer.Tile({
+      const empty = new TileLayer({
         title: 'Empty Map',
         source: new XYZ(),
         zIndex: 0
@@ -76,4 +78,30 @@ export function BaseMapLayer(baseMapName) {
     }
 
   }
+};
+
+export function MapScaleLine() {
+  /*
+  This function define the scale line.
+  */
+  const scaleLine = new ScaleLine({
+    className: 'ol-scale-line',
+    target: document.getElementById('scale-line')
+  });
+  map.addControl(scaleLine);
+
+  return scaleLine;
+};
+
+export function MapFullScreen() {
+  /*
+  This function allow to have the full screen map
+  */
+  const fullScreen = new FullScreen({
+    className: 'ol-full-screen',
+    tipLabel: 'Toggle full-screen'
+  });
+  map.addControl(fullScreen);
+
+  return fullScreen;
 };
