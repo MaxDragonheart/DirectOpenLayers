@@ -1,5 +1,5 @@
 import './style.css';
-import {MapInizialized, MapSetView, BaseMapLayer} from './js/directopenlayers';
+import {MapInizialized, MapSetView, BaseMapLayer} from './directopenlayers';
 
 MapInizialized('map');
 MapSetView(0.0, 0.0, 0);
