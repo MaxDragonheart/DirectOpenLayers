@@ -3,5 +3,5 @@ dist/
 node_modules/
 
 # Files
-index.js
-style.css
+src/index.js
+src/style.css
