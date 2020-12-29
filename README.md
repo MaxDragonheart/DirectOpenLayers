@@ -43,7 +43,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 
 ## Example
 
-- Quick Start
+- [Quick Start](src/quick-start/quick-start.md)
 
 ## Dependencies
 
