@@ -10,6 +10,10 @@ import {fromLonLat} from 'ol/proj';
 
 
 export function MapInizialized(mapTarget) {
+  /*
+  This function initialize the map
+  mapTarget: string. It is the id of the div that contain the map.
+  */
   map = new Map({
     target: mapTarget
   });
@@ -19,6 +23,14 @@ export function MapInizialized(mapTarget) {
 
 let view;
 export function MapSetView(longitude, latitude, zoomLevel, setMaxZoom, setMinZoom) {
+  /*
+  This function define the initial view of the map.
+  longitude: decimal. It is the longitude of the initial center of the map.
+  latitude: decimal. It is the latitude of the initial center of the map.
+  zoomLevel: decimal. It is the inizial zoom of the map.
+  setMaxZoom: decimal. It is the max zoom of the map.
+  setMinZoom: decimal. It is the min zoom of the map.
+  */
 
   view = new View({
     center: fromLonLat([longitude, latitude]),
@@ -32,6 +44,11 @@ export function MapSetView(longitude, latitude, zoomLevel, setMaxZoom, setMinZoo
 };
 
 export function BaseMapLayer(baseMapName) {
+  /*
+  This function define the base map.
+  It is possibile to create an empty map or a Tile based on OSM.
+  baseMapName: string. It is the name of the Tile.
+  */
 
   this.baseMapName = baseMapName;
 
