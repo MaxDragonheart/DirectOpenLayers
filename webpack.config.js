@@ -1,11 +1,20 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 module.exports = {
-    mode: 'development',
-    entry: './src/js/index.js',
+    mode: "development",
+    entry: './src/index.js',
+    plugins: [
+      new CleanWebpackPlugin(),
+      new HtmlWebpackPlugin({
+        title: 'DirectOpenLayers',
+        template: './src/template.html'
+      }),
+    ],
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js',
+        filename: 'main.js',
     },
     module: {
       rules: [
@@ -15,6 +24,10 @@ module.exports = {
                   'style-loader',
                   'css-loader',
               ],
+          },
+          {
+            test: /\.(png|svg|jpg|jpeg|gif)$/i,
+            type: 'asset/resource',
           },
       ],
   },
