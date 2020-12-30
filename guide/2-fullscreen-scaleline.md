@@ -13,12 +13,15 @@
 
 ## JavaScript
         import './style.css';
-        import {MapInizialized, MapSetView, BaseMapLayer, MapScaleLine, MapFullScreen} from './directopenlayers';
+        import {
+          MapInizialized, MapSetView, BaseMapLayer,
+          MapFullScreen, MapScaleLine
+        } from './directopenlayers';
 
-        MapInizialized('map');
-        MapSetView(0.0, 0.0, 0);
-        MapScaleLine();
-        MapFullScreen();
+        const mapCanvas = new MapInizialized('map');
+        const mapCanvasView = new MapSetView(0.0, 0.0, 0);
+        const fullScreen = new MapFullScreen();
+        const scaleLine = new MapScaleLine();
         const basemap = new BaseMapLayer('Test');
         const osm = basemap.createOSMStandard();
-        map.addLayer(osm);
+        mapCanvas.addLayer(osm);
