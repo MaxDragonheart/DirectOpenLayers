@@ -16,9 +16,9 @@
         import './style.css';
         import {MapInizialized, MapSetView, BaseMapLayer} from './directopenlayers';
 
-        MapInizialized('map');
-        MapSetView(0.0, 0.0, 0);
+        const mapCanvas = new MapInizialized('map');
+        const mapCanvasView = new MapSetView(0.0, 0.0, 0);
 
         const basemap = new BaseMapLayer('Test');
         const osm = basemap.createOSMStandard();
-        map.addLayer(osm);
+        mapCanvas.addLayer(osm);

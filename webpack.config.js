@@ -5,6 +5,12 @@ const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 module.exports = {
     mode: "development",
     entry: './src/index.js',
+    devtool: 'inline-source-map',
+    devServer: {
+      contentBase: './dist',
+      compress: true,
+      port: 9000
+    },
     plugins: [
       new CleanWebpackPlugin(),
       new HtmlWebpackPlugin({
@@ -30,5 +36,5 @@ module.exports = {
             type: 'asset/resource',
           },
       ],
-  },
+    },
 };

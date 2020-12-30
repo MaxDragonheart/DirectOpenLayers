@@ -31,25 +31,27 @@ As example, below the comparison between quick start from OpenLayers and DirectO
       import './style.css';
       import {MapInizialized, MapSetView, BaseMapLayer} from './directopenlayers';
 
-      MapInizialized('map');
-      MapSetView(0.0, 0.0, 0);
+      const mapCanvas = new MapInizialized('map');
+      const mapCanvasView = new MapSetView(0.0, 0.0, 0);
 
       const basemap = new BaseMapLayer('Test');
       const osm = basemap.createOSMStandard();
-      map.addLayer(osm);
+      mapCanvas.addLayer(osm);
 
 [DirectOpenLayers](src/directopenlayers.js) now is in beta version. His [license](LICENSE) is inheritaded from OL.
 Who would like to contribute to the maintance of this library is welcome :)
 
 ## Example
 
-- [Quick Start](src/quick-start/quick-start.md)
+- [Quick Start](guide/1-quick-start.md)
 - [Full Screen and Scale Line](src/fullscreen-scaleline/fullscreen-scaleline.md)
 
 ## Dependencies
 
+    npm init
     npm install webpack webpack-cli --save-dev
     npm install --save-dev style-loader css-loader
     npm install --save-dev html-webpack-plugin
     npm install --save-dev clean-webpack-plugin
+    npm install --save-dev webpack-dev-server
     npm install ol
