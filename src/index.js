@@ -5,7 +5,7 @@ import {
 } from './directopenlayers';
 
 const mapCanvas = new MapInizialized('map');
-const mapCanvasView = new MapSetView(0.0, 0.0, 0);
+const mapCanvasView = new MapSetView(14.350, 40.905, 15);
 const fullScreen = new MapFullScreen();
 const scaleLine = new MapScaleLine();
 const basemap = new BaseMapLayer('Test');

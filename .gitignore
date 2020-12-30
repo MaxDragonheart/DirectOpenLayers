@@ -3,5 +3,3 @@ dist/
 node_modules/
 
 # Files
-./src/index.js
-./src/style.css

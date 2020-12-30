@@ -19,17 +19,17 @@
           MapScaleLine, MapFullScreen, vectorsLayer
         } from './directopenlayers';
 
-        MapInizialized('map');
-        MapSetView(14.3505090717191, 40.9230084648239, 13);
-        MapScaleLine();
-        MapFullScreen();
+        const mapCanvas = new MapInizialized('map');
+        const mapCanvasView = new MapSetView(14.350, 40.905, 15);
+        const fullScreen = new MapFullScreen();
+        const scaleLine = new MapScaleLine();
         const basemap = new BaseMapLayer('Test');
         const osm = basemap.createOSMStandard();
-        map.addLayer(osm);
+        mapCanvas.addLayer(osm);
         const polygonData = new vectorsLayer(
           'polygon',
           'https://massimilianomoraca.it/api/geomedia/istat/',
           'Polygons'
         );
         const renderPolygonData = polygonData.createVector('rgba(49,130,189,1.0)', null, null, 4, 'rgba(255,0,0,0.5)');
-        map.addLayer(renderPolygonData)
+        mapCanvas.addLayer(renderPolygonData)
