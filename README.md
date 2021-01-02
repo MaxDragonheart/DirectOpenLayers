@@ -43,9 +43,9 @@ Who would like to contribute to the maintance of this library is welcome :)
 
 ## Example
 
-- [Quick Start](guide/1-quick-start.md)
-- [Full Screen and Scale Line](guide/2-fullscreen-scaleline.md)
-- [Vectors](guide/3-vectors.md)
+- [Quick Start](docs/guide/1-quick-start.md)
+- [Full Screen and Scale Line](docs/guide/2-fullscreen-scaleline.md)
+- [Vectors](docs/guide/3-vectors.md)
 
 ## Dependencies
 
