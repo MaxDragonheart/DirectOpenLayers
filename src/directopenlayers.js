@@ -14,6 +14,9 @@ import CircleStyle from 'ol/style/Circle';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import GeoJSON from 'ol/format/GeoJSON';
+import Cluster from 'ol/source/Cluster';
+import Text from 'ol/style/Text';
+import {createEmpty, extend} from 'ol/extent';
 
 let map;
 export function MapInizialized(mapTarget) {
@@ -65,6 +68,9 @@ export function BaseMapLayer(baseMapName) {
   return {
 
     'createEmpty': function() {
+      /*
+      Empty basemap.
+      */
       const empty = new TileLayer({
         title: 'Empty Map',
         source: new XYZ(),
@@ -74,6 +80,9 @@ export function BaseMapLayer(baseMapName) {
     },
 
     'createOSMStandard': function() {
+      /*
+      Basemap based on Open Street Map.
+      */
       let osm = new TileLayer({
         title: baseMapName,
         source: new OSM(),
@@ -131,7 +140,6 @@ export function vectorsLayer(
   let layerVector;
 
   return {
-
     'createVector': function(
       setStrokeColor,
       setStrokeLineDashLength,
@@ -164,6 +172,7 @@ export function vectorsLayer(
       this.setZIndex = setZIndex;
 
       let stroke, fill;
+      // Vector's style definition.
       stroke = new Stroke({
           color: setStrokeColor,
           width: setStrokeWidth,
@@ -176,6 +185,7 @@ export function vectorsLayer(
       });
 
       let style;
+      // Change style based on the geometry type.
       if (vectorType.toLowerCase() === 'polygon') {
         style = new Style({
             stroke: stroke,
@@ -196,7 +206,7 @@ export function vectorsLayer(
       } else {
         console.error('Geometry not recognized! Accepted geometries: point, linestring, polygon.');
       }
-
+      // Build the vector
       layerVector = new VectorLayer({
         title: vectorsLayerName,
         source: new VectorSource({
@@ -266,8 +276,8 @@ export function vectorsLayer(
       this.paddingRight = paddingRight;
       this.durationMilliseconds = durationMilliseconds;
 
-      extent = layerVector.getSource().getExtent();
-      options = {
+      const extent = layerVector.getSource().getExtent();
+      const options = {
         size: map.getSize(),
         padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
         duration: durationMilliseconds
@@ -309,6 +319,147 @@ export function vectorsLayer(
               zoom: map.getView().getZoom()
             });
             map.setView(newView);
+          }
+        }
+      });
+    },
+    'createCluster': function(
+      clusterDistance,
+      colorMaxCluster,
+      colorMiddleCluster,
+      colorMinCluster,
+      colorUncluster,
+      setStrokeColorCluster,
+      setStrokeLineDashLengthCluster,
+      setStrokeLineDashSpaceCluster,
+      setStrokeWidthCluster,
+      colorTextCluster,
+      setMaxZoom,
+      setMinZoom,
+      setZIndex
+    ){
+      /*
+      This function allow to create the clusters from points' vector.
+      clusterDistance: integer. Define the distance buffer useful for points' aggregation.
+      colorMaxCluster: string. It's the rgba color of the biggest cluster.
+      colorMiddleCluster: string. It's the rgba color of the intermediate cluster.
+      colorMinCluster: string. It's the rgba color of the smaller cluster.
+      colorUncluster: string. It's the rgba color of the unclustered point.
+      setStrokeColorCluster: string. It's the rgba color.
+      setStrokeLineDashLengthCluster: decimal. It's a number that define the length of the dash. It's can be null.
+      setStrokeLineDashSpaceCluster: decimal. It's a number that define the space between the dashes. It's can be null.
+      setStrokeWidthCluster: integer. This number define the stroke line's width.
+      colorTextCluster: string. It's the rgba color.
+      setMaxZoom: decimal. It's the max zoom level with which is possible to see the vector.
+      setMinZoom decimal. It's the min zoom level with which is possible to see the vector.
+      setZIndex: integer. It's the the level priority for the vector. The higher it is, the higher the position
+                of the vector in the stack of layers.
+      */
+      this.clusterDistance = clusterDistance;
+      this.colorMaxCluster = colorMaxCluster;
+      this.colorMiddleCluster = colorMiddleCluster;
+      this.colorMinCluster = colorMinCluster;
+      this.colorUncluster = colorUncluster;
+      this.setStrokeColorCluster = setStrokeColorCluster;
+      this.setStrokeLineDashLengthCluster = setStrokeLineDashLengthCluster;
+      this.setStrokeLineDashSpaceCluster = setStrokeLineDashSpaceCluster;
+      this.setStrokeWidthCluster = setStrokeWidthCluster;
+      this.colorTextCluster = colorTextCluster;
+      this.setMaxZoom = setMaxZoom;
+      this.setMinZoom = setMinZoom;
+      this.setZIndex = setZIndex;
+
+      // Cluster's style definition
+      let styleCache = {};
+      function getStyle (feature, resolution) {
+        let size = feature.get('features').length;
+        let style = styleCache[size];
+
+        if (!style) {
+          let color = size>clusterDistance ? colorMaxCluster : size>clusterDistance/3 ? colorMiddleCluster : size>1 ? colorMinCluster : colorUncluster;
+          let radius = Math.max(8, Math.min(size*1.5, 20));
+          style = styleCache[size] = new Style({
+            image: new CircleStyle({
+              radius: radius*1.5,
+              stroke: new Stroke({
+                color: setStrokeColorCluster,
+                width: setStrokeWidthCluster,
+                lineDash: [setStrokeLineDashLengthCluster, setStrokeLineDashSpaceCluster],
+              }),
+              fill: new Fill({
+                color: color
+              })
+            }),
+            text: new Text({
+              scale: radius/8,
+              text: size.toString(),
+              fill: new Fill({
+                color: colorTextCluster
+              }),
+              textAlign: 'center',
+              textBaseline: 'middle'
+            })
+          });
+        }
+        return style;
+      };
+
+      // Build the cluster vector
+      layerVector = new VectorLayer({
+        title: vectorsLayerName,
+        source: new Cluster({
+          source: new VectorSource({
+              url: urlAPI,
+              format: new GeoJSON(),
+          }),
+          distance: clusterDistance
+        }),
+        style: getStyle,
+        minZoom: setMinZoom,
+        maxZoom: setMaxZoom,
+        zIndex: setZIndex
+      });
+      return layerVector;
+    },
+    'zoomOnCluster': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight,
+      durationMilliseconds
+    ){
+      /*
+      This function activates zoom on clusters. The function is inactive for
+      the unclustered points.
+      paddingTop: integer. It is the top padding.
+      paddingLeft: integer. It is the left padding.
+      paddingBottom: integer. It is the bottom padding.
+      paddingRight: integer. It is the right padding.
+      durationMilliseconds: integer. Corresponds to how long the zoom lasts.
+      */
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+      this.durationMilliseconds = durationMilliseconds;
+
+      map.on('singleclick', function(event) {
+        const feature = map.forEachFeatureAtPixel(event.pixel, function(feature) {
+            return feature;
+        })
+        if (feature) {
+          const clusterSize = feature.get('features').length;
+          if (clusterSize > 1) {
+            const extent = createEmpty();
+            feature.get('features').forEach(function(feature) {
+              extend(extent, feature.getGeometry().getExtent());
+            });
+            const options = {
+              size: map.getSize(),
+              padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+              duration: durationMilliseconds
+            }
+            map.getView().fit(extent, options);
           }
         }
       });

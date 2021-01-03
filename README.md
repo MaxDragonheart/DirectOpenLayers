@@ -41,13 +41,14 @@ As example, below the comparison between quick start from OpenLayers and DirectO
 [DirectOpenLayers](src/directopenlayers.js) now is in beta version. His [license](LICENSE) is inheritaded from OL.
 Who would like to contribute to the maintance of this library is welcome :)
 
-## Example
+## Examples
 
 - [Quick Start](https://maxdragonheart.github.io/DirectOpenLayers/docs/1-quick-start/index.html)
 - [Full Screen and Scale Line](https://maxdragonheart.github.io/DirectOpenLayers/docs/2-fullscreen-and-scaleline/index.html)
 - [Vectors](https://maxdragonheart.github.io/DirectOpenLayers/docs/3-add-vectors/index.html)
 - [Zoom on vector source](https://maxdragonheart.github.io/DirectOpenLayers/docs/4-zoom-on-vector-source/index.html)
 - [Lock to extent](https://maxdragonheart.github.io/DirectOpenLayers/docs/5-lock-to-extent/index.html)
+- [Points' clusters](https://maxdragonheart.github.io/DirectOpenLayers/docs/6-points-clusters/index.html)
 
 ## Dependencies
 
