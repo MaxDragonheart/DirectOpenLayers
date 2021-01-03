@@ -43,7 +43,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 
 ## Example
 
-- [Quick Start](./docs/1-quick-start/index.html)
+- [Quick Start](https://maxdragonheart.github.io/DirectOpenLayers/docs/1-quick-start/index.html)
 - [Full Screen and Scale Line](docs/guide/2-fullscreen-scaleline.md)
 - [Vectors](docs/guide/3-vectors.md)
 - [Zoom to](docs/guide/4-zoom-to.md)
