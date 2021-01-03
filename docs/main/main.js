@@ -134,5 +134,33 @@ function vectorsLayer(
       });
       return layerVector;
     },
+    'zoomToExtent': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight,
+      durationMilliseconds
+    ){
+
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+      this.durationMilliseconds = durationMilliseconds;
+
+      layerVector.getSource().once('change', function(evt) {
+        if (layerVector.getSource().getState() === 'ready') {
+          if (layerVector.getSource().getFeatures().length > 0) {
+            extent = layerVector.getSource().getExtent();
+            options = {
+              size: map.getSize(),
+              padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+              duration: durationMilliseconds
+            }
+            map.getView().fit(extent, options);
+          }
+        }
+      });
+    },
   };
 };
