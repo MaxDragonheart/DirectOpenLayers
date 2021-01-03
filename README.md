@@ -46,6 +46,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 - [Quick Start](docs/guide/1-quick-start.md)
 - [Full Screen and Scale Line](docs/guide/2-fullscreen-scaleline.md)
 - [Vectors](docs/guide/3-vectors.md)
+- [Zoom to](docs/guide/4-zoom-to.md)
 
 ## Dependencies
 
@@ -56,3 +57,8 @@ Who would like to contribute to the maintance of this library is welcome :)
     npm install --save-dev clean-webpack-plugin
     npm install --save-dev webpack-dev-server
     npm install ol
+
+### Try it!
+
+Use the code from example and past it on `index.js` and `template.html`
+Start server with `npm start`

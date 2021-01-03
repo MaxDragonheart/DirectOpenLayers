@@ -21,7 +21,6 @@
 
         const mapCanvas = new MapInizialized('map');
         const mapCanvasView = new MapSetView(14.350, 40.905, 15);
-        const fullScreen = new MapFullScreen();
         const scaleLine = new MapScaleLine();
         const basemap = new BaseMapLayer('Test');
         const osm = basemap.createOSMStandard();
