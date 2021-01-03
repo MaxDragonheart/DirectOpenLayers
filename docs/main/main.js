@@ -16,6 +16,22 @@ function MapSetView(longitude, latitude, zoomLevel, setMaxZoom, setMinZoom) {
   map.setView(view);
   return view;
 };
+function MapScaleLine() {
+  const scaleLine = new ol.control.ScaleLine({
+    className: 'ol-scale-line',
+    target: document.getElementById('scale-line')
+  });
+  map.addControl(scaleLine);
+  return scaleLine;
+};
+function MapFullScreen() {
+  const fullScreen = new ol.control.FullScreen({
+    className: 'ol-full-screen',
+    tipLabel: 'Toggle full-screen'
+  });
+  map.addControl(fullScreen);
+  return fullScreen;
+};
 function BaseMapLayer(baseMapName) {
   this.baseMapName = baseMapName;
   let empty;
