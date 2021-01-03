@@ -218,7 +218,7 @@ export function vectorsLayer(
       durationMilliseconds
     ){
       /*
-      This function allow to zoom at the target vector's extent.
+      This function allow to zoom on the target vector's extent.
       paddingTop: integer. It is the top padding.
       paddingLeft: integer. It is the left padding.
       paddingBottom: integer. It is the bottom padding.
@@ -231,19 +231,87 @@ export function vectorsLayer(
       this.paddingRight = paddingRight;
       this.durationMilliseconds = durationMilliseconds;
 
-        layerVector.getSource().once('change', function(evt) {
-          if (layerVector.getSource().getState() === 'ready') {
-            if (layerVector.getSource().getFeatures().length > 0) {
-              const extent = layerVector.getSource().getExtent();
-              const options = {
-                size: map.getSize(),
-                padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
-                duration: durationMilliseconds
-              }
-              map.getView().fit(extent, options);
+      layerVector.getSource().once('change', function(evt) {
+        if (layerVector.getSource().getState() === 'ready') {
+          if (layerVector.getSource().getFeatures().length > 0) {
+            const extent = layerVector.getSource().getExtent();
+            const options = {
+              size: map.getSize(),
+              padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+              duration: durationMilliseconds
             }
+            map.getView().fit(extent, options);
           }
-        });
+        }
+      });
+    },
+    'zoomOnLayer': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight,
+      durationMilliseconds
+    ){
+      /*
+      This function activates the zoom by clicking on the button.
+      paddingTop: integer. It is the top padding.
+      paddingLeft: integer. It is the left padding.
+      paddingBottom: integer. It is the bottom padding.
+      paddingRight: integer. It is the right padding.
+      durationMilliseconds: integer. Corresponds to how long the zoom lasts.
+      */
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+      this.durationMilliseconds = durationMilliseconds;
+
+      extent = layerVector.getSource().getExtent();
+      options = {
+        size: map.getSize(),
+        padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+        duration: durationMilliseconds
+      }
+      map.getView().fit(extent, options);
+    },
+    'lockToExtent': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight
+    ){
+      /*
+      This function activates lock on the vector's target extent.
+      paddingTop: integer. It is the top padding.
+      paddingLeft: integer. It is the left padding.
+      paddingBottom: integer. It is the bottom padding.
+      paddingRight: integer. It is the right padding.
+      */
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+
+      layerVector.getSource().once('change', function(evt) {
+        if (layerVector.getSource().getState() === 'ready') {
+          if (layerVector.getSource().getFeatures().length > 0) {
+            const extent = layerVector.getSource().getExtent();
+            const options = {
+              size: map.getSize(),
+              padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+            }
+            map.getView().fit(extent, options);
+
+            const newView = new View({
+              extent: extent,
+              showFullExtent: true,
+              center: map.getView().getCenter(),
+              zoom: map.getView().getZoom()
+            });
+            map.setView(newView);
+          }
+        }
+      });
     },
   };
 };

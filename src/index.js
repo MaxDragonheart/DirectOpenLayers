@@ -17,7 +17,7 @@ const pointData = new vectorsLayer(
 )
 const renderPointData = pointData.createVector(
   'rgba(255,0,0,0.5)', null, null, 2, 'rgba(49,130,189,1.0)',
-  20, 0, 13
+  20, 4, 13
 );
 mapCanvas.addLayer(renderPointData);
-pointData.zoomToExtent(50, 50, 50, 50, 2000);
+pointData.lockToExtent(100, 100, 100, 100);

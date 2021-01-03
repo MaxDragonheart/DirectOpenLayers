@@ -47,6 +47,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 - [Full Screen and Scale Line](https://maxdragonheart.github.io/DirectOpenLayers/docs/2-fullscreen-and-scaleline/index.html)
 - [Vectors](https://maxdragonheart.github.io/DirectOpenLayers/docs/3-add-vectors/index.html)
 - [Zoom on vector source](https://maxdragonheart.github.io/DirectOpenLayers/docs/4-zoom-on-vector-source/index.html)
+- [Lock to extent](https://maxdragonheart.github.io/DirectOpenLayers/docs/5-lock-to-extent/index.html)
 
 ## Dependencies
 

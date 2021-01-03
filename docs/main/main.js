@@ -151,13 +151,45 @@ function vectorsLayer(
       layerVector.getSource().once('change', function(evt) {
         if (layerVector.getSource().getState() === 'ready') {
           if (layerVector.getSource().getFeatures().length > 0) {
-            extent = layerVector.getSource().getExtent();
-            options = {
+            const extent = layerVector.getSource().getExtent();
+            const options = {
               size: map.getSize(),
               padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
               duration: durationMilliseconds
             }
             map.getView().fit(extent, options);
+          }
+        }
+      });
+    },
+    'lockToExtent': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight
+    ){
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+
+      layerVector.getSource().once('change', function(evt) {
+        if (layerVector.getSource().getState() === 'ready') {
+          if (layerVector.getSource().getFeatures().length > 0) {
+            const extent = layerVector.getSource().getExtent();
+            const options = {
+              size: map.getSize(),
+              padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+            }
+            map.getView().fit(extent, options);
+
+            newView = new ol.View({
+              extent: extent,
+              showFullExtent: true,
+              center: map.getView().getCenter(),
+              zoom: map.getView().getZoom()
+            });
+            map.setView(newView);
           }
         }
       });
