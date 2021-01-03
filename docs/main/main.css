@@ -1,0 +1,12 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+.map {
+  height: 50vh;
+  width: 100vw;
+}
+.code {
+  padding: 5px;
+  background-color: yellow;
+}

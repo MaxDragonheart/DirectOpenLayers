@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="../directopenlayers-logo.ico" type="image/gif">
+
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="../main/main.css" type="text/css">
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <script src="../main/main.js"></script>
+    <title>Quick Start | DirectOpenLayers</title>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div class="code">
+      <p><strong>index.js</strong></p>
+
+    </div>
+    <script type="text/javascript">
+      const mapCanvas = new MapInizialized('map');
+      const mapCanvasView = new MapSetView(0.0, 0.0, 0);
+      const basemap = new BaseMapLayer('OSM');
+      const osm = basemap.createOSMStandard();
+      mapCanvas.addLayer(osm);
+    </script>
+  </body>
+</html>
