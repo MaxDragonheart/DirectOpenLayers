@@ -45,7 +45,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 
 - [Quick Start](https://maxdragonheart.github.io/DirectOpenLayers/docs/1-quick-start/index.html)
 - [Full Screen and Scale Line](https://maxdragonheart.github.io/DirectOpenLayers/docs/2-fullscreen-and-scaleline/index.html)
-- [Vectors](docs/guide/3-vectors.md)
+- [Vectors](https://maxdragonheart.github.io/DirectOpenLayers/docs/3-add-vectors/index.html)
 - [Zoom to](docs/guide/4-zoom-to.md)
 
 ## Dependencies

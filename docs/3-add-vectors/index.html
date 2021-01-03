@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="../directopenlayers-logo.ico" type="image/gif">
+
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="../main/main.css" type="text/css">
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <script src="../main/main.js"></script>
+    <title>Add vectors | DirectOpenLayers</title>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <div class="code">
+      <p><strong>index.js</strong></p>
+      <script src="https://gist.github.com/MaxDragonheart/0244f19641ab41b56dc51243682fce82.js"></script>
+    </div>
+    <script type="text/javascript">
+      const mapCanvas = new MapInizialized('map');
+      const mapCanvasView = new MapSetView(14.350, 40.905, 15);
+      const fullScreen = new MapFullScreen();
+      const scaleLine = new MapScaleLine();
+      const basemap = new BaseMapLayer('OSM');
+      const osm = basemap.createOSMStandard();
+      mapCanvas.addLayer(osm);
+
+      const pointData = new vectorsLayer(
+        'point',
+        'https://massimilianomoraca.it/api/geomedia/attention-points/',
+        'Points'
+      )
+      const renderPointData = pointData.createVector(
+        'rgba(255,0,0,0.5)', null, null, 2, 'rgba(49,130,189,1.0)',
+        20, 14, 4
+      );
+      mapCanvas.addLayer(renderPointData);
+
+      const lineData =  new vectorsLayer(
+        'LINESTRING',
+        'https://massimilianomoraca.it/api/geomedia/confine-casalnuovo/',
+        'Lines'
+      );
+      const renderLineData = lineData.createVector(
+        'rgba(255,0,255,1.0)', null, null, 4, null,
+        13, 0, 3
+      );
+      mapCanvas.addLayer(renderLineData);
+
+      const polygonData = new vectorsLayer(
+        'polygon',
+        'https://massimilianomoraca.it/api/geomedia/istat/',
+        'Polygons'
+      );
+      const renderPolygonData = polygonData.createVector(
+        'rgba(49,130,189,1.0)', null, null, 0.5, 'rgba(255,0,0,0.5)',
+        20, 13, 2
+      );
+      mapCanvas.addLayer(renderPolygonData)
+    </script>
+  </body>
+</html>

@@ -55,3 +55,84 @@ function BaseMapLayer(baseMapName) {
     }
   }
 };
+function vectorsLayer(
+  vectorType,
+  urlAPI,
+  vectorsLayerName
+){
+
+  this.vectorType = vectorType;
+  this.urlAPI = urlAPI;
+  this.vectorsLayerName = vectorsLayerName;
+
+  let layerVector;
+
+  return {
+
+    'createVector': function(
+      setStrokeColor,
+      setStrokeLineDashLength,
+      setStrokeLineDashSpace,
+      setStrokeWidth,
+      setFillColor,
+      setMaxZoom,
+      setMinZoom,
+      setZIndex
+    ){
+      this.setStrokeColor = setStrokeColor;
+      this.setStrokeLineDashLength = setStrokeLineDashLength;
+      this.setStrokeLineDashSpace = setStrokeLineDashSpace;
+      this.setStrokeWidth = setStrokeWidth;
+      this.setFillColor = setFillColor;
+      this.setMaxZoom = setMaxZoom;
+      this.setMinZoom = setMinZoom;
+      this.setZIndex = setZIndex;
+
+      stroke = new ol.style.Stroke({
+          color: setStrokeColor,
+          width: setStrokeWidth,
+          lineDash: [setStrokeLineDashLength, setStrokeLineDashSpace],
+          lineCap: 'butt',
+          lineJoin: 'miter'
+      });
+      fill = new ol.style.Fill({
+        color: setFillColor,
+      });
+
+      let style;
+      if (vectorType.toLowerCase() === 'polygon') {
+        style = new ol.style.Style({
+            stroke: stroke,
+            fill: fill
+        });
+      } else if (vectorType.toLowerCase() === 'linestring') {
+        style = new ol.style.Style({
+            stroke: stroke
+        });
+      } else if (vectorType.toLowerCase() === 'point') {
+        style = new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: setStrokeWidth * 5,
+              stroke: stroke,
+              fill: fill
+            })
+        });
+      } else {
+        console.error('Geometry not recognized! Accepted geometries: point, linestring, polygon.');
+      }
+
+      layerVector = new ol.layer.Vector({
+        title: vectorsLayerName,
+        source: new ol.source.Vector({
+            url: urlAPI,
+            format: new ol.format.GeoJSON(),
+        }),
+        style: style,
+        minZoom: setMinZoom,
+        maxZoom: setMaxZoom,
+        zIndex: setZIndex
+      });
+      return layerVector;
+    },
+  };
+};
