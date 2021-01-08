@@ -18,6 +18,7 @@ import Cluster from 'ol/source/Cluster';
 import Text from 'ol/style/Text';
 import {createEmpty, extend} from 'ol/extent';
 import TileWMS from 'ol/source/TileWMS';
+import WFS from 'ol/format/WFS';
 
 let map;
 export function MapInizialized(mapTarget) {
@@ -523,9 +524,171 @@ export function wmsLayer(
         zIndex: setZIndex,
         opacity: setOpacity
       });
-      
+
       return wms;
     },
   }
 
+};
+export function wfsLayer(
+  vectorType,
+  layerName
+){
+  /*
+  This function allow to visualize WFS service on the map.
+  vectorType: string. It can be point, linestring and polygon.
+  layerName: string. It is the name that you choose for the WFS resource.
+  */
+  this.vectorType = vectorType;
+  this.layerName = layerName;
+
+  let wfs;
+  return {
+
+    'createWFSLayer': function(
+      wfsLayerPath,
+      wfslayerName,
+      setStrokeColor,
+      setStrokeLineDashLength,
+      setStrokeLineDashSpace,
+      setStrokeWidth,
+      setFillColor,
+      setMaxZoom,
+      setMinZoom,
+      setZIndex
+    ){
+      /*
+      This function create the WFS layer.
+      wfsLayerPath: string. It is the url of WFS resource.
+      wfslayerName: string. It is the name of the WFS resource
+      setStrokeColor: string. It's the rgba color.
+      setStrokeLineDashLength: decimal. It's a number that define the length of the dash. It's can be null.
+      setStrokeLineDashSpace: decimal. It's a number that define the space between the dashes. It's can be null.
+      setStrokeWidth: integer. This number define the stroke line's width.
+      setFillColor: string. It's the rgba color.
+      setMaxZoom: decimal. It's the max zoom level with which is possible to see the vector.
+      setMinZoom decimal. It's the min zoom level with which is possible to see the vector.
+      setZIndex: integer. It's the the level priority for the vector. The higher it is, the higher the position
+                of the vector in the stack of layers.
+      */
+      this.wfsLayerPath = wfsLayerPath;
+      this.wfslayerName = wfslayerName;
+      this.setStrokeColor = setStrokeColor;
+      this.setStrokeLineDashLength = setStrokeLineDashLength;
+      this.setStrokeLineDashSpace = setStrokeLineDashSpace;
+      this.setStrokeWidth = setStrokeWidth;
+      this.setFillColor = setFillColor;
+      this.setMaxZoom = setMaxZoom;
+      this.setMinZoom = setMinZoom;
+      this.setZIndex = setZIndex;
+
+      let stroke, fill;
+      stroke = new Stroke({
+          color: setStrokeColor,
+          width: setStrokeWidth,
+          lineDash: [setStrokeLineDashLength, setStrokeLineDashSpace],
+          lineCap: 'butt',
+          lineJoin: 'miter'
+      });
+      fill = new Fill({
+        color: setFillColor,
+      });
+
+      let style;
+      // Change style based on the geometry type.
+      if (vectorType.toLowerCase() === 'polygon') {
+        style = new Style({
+            stroke: stroke,
+            fill: fill
+        });
+      } else if (vectorType.toLowerCase() === 'linestring') {
+        style = new Style({
+            stroke: stroke
+        });
+      } else if (vectorType.toLowerCase() === 'point') {
+        style = new Style({
+            image: new CircleStyle({
+              radius: setStrokeWidth * 5,
+              stroke: stroke,
+              fill: fill
+            })
+        });
+      } else {
+        console.error('Geometry not recognized! Accepted geometries: point, linestring, polygon.');
+      }
+      // Build the vector
+      wfs = new VectorLayer({
+        title: layerName,
+        source: new VectorSource(),
+        style: style,
+        minZoom: setMinZoom,
+        maxZoom: setMaxZoom,
+        zIndex: setZIndex
+      });
+      /// Send features to WFS Source
+      const wfsFeatureRequest = new WFS().writeGetFeature({
+        srsName: 'EPSG:3857',
+        featureTypes: [wfslayerName],
+        outputFormat: 'application/json',
+      });
+      async function getFeatureProperties() {
+        let settings = {
+          method: 'POST',
+          body: new XMLSerializer().serializeToString(wfsFeatureRequest),
+        }
+        try {
+          let response = await fetch(wfsLayerPath, settings);
+          if (!response.ok) {
+            throw new Error(`HTTP error!\n Status: ${response.status}\n Type: ${response.type}\n URL: ${response.url}`);
+          } else {
+            let data = await response.text();
+            let json = JSON.parse(data);
+            const features = new GeoJSON().readFeatures(json);
+            wfs.getSource().addFeatures(features);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      getFeatureProperties();
+
+      return wfs;
+    },
+    'zoomToExtent': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight,
+      durationMilliseconds
+    ){
+      /*
+      This function allow to zoom on the target vector's extent.
+      paddingTop: integer. It is the top padding.
+      paddingLeft: integer. It is the left padding.
+      paddingBottom: integer. It is the bottom padding.
+      paddingRight: integer. It is the right padding.
+      durationMilliseconds: integer. Corresponds to how long the zoom lasts.
+      */
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+      this.durationMilliseconds = durationMilliseconds;
+
+      wfs.getSource().once('change', function(evt) {
+        if (wfs.getSource().getState() === 'ready') {
+          if (wfs.getSource().getFeatures().length > 0) {
+            const extent = wfs.getSource().getExtent();
+            const options = {
+              size: map.getSize(),
+              padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+              duration: durationMilliseconds
+            }
+            map.getView().fit(extent, options);
+          }
+        }
+      });
+    },
+
+  }
 };

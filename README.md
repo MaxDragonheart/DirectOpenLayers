@@ -50,6 +50,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 - [Lock to extent](https://maxdragonheart.github.io/DirectOpenLayers/docs/5-lock-to-extent/index.html)
 - [Points' clusters](https://maxdragonheart.github.io/DirectOpenLayers/docs/6-points-clusters/index.html)
 - [Manage WMS Source](https://maxdragonheart.github.io/DirectOpenLayers/docs/7-wms-source/index.html)
+- [Manage WFS Source](https://maxdragonheart.github.io/DirectOpenLayers/docs/8-wfs-source/index.html)
 
 ## Dependencies
 

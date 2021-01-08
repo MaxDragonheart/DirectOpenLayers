@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="../directopenlayers-logo.ico" type="image/gif">
+
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="../main/main.css" type="text/css">
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <script src="../main/main.js"></script>
+    <title>Manage WFS Source | DirectOpenLayers</title>
+  </head>
+  <body>
+    <div class="menu">
+      <a class="directopenlayers" href="https://maxdragonheart.github.io/DirectOpenLayers/">DirectOpenLayers</a>
+    </div>
+    <div id="map" class="map"></div>
+    <div class="code">
+      <p><strong>index.js</strong></p>
+      <script src="https://gist.github.com/MaxDragonheart/679a230a3fd3d851d7a9a80ae35a6b3a.js"></script>
+    </div>
+    <script type="text/javascript">
+    const mapCanvas = new MapInizialized('map');
+    const mapCanvasView = new MapSetView(0, 90, 4);
+    const basemap = new BaseMapLayer('OSM');
+    const osm = basemap.createOSMStandard();
+    mapCanvas.addLayer(osm);
+
+    const wfsData = new wfsLayer(
+      'POLYGON',
+      'Buildings'
+    );
+    const vector = wfsData.createWFSLayer(
+      'https://gis.massimilianomoraca.it/geoserver/MassimilianoMoraca/wfs',
+      'geomedia_edificicasalnuovo',
+      'rgba(0, 0, 255, 1.0)',
+      null,
+      null,
+      0.5,
+      'rgba(0, 255, 0, 1.0)'
+    );
+    mapCanvas.addLayer(vector);
+    wfsData.zoomToExtent(50, 50, 50, 50, 5000);
+    </script>
+  </body>
+</html>

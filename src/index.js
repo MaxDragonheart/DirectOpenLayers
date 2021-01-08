@@ -1,24 +1,27 @@
 import './style.css';
 import {
   MapInizialized, MapSetView, BaseMapLayer,
-  wmsLayer
+  wfsLayer
 } from './directopenlayers';
 
 const mapCanvas = new MapInizialized('map');
-const mapCanvasView = new MapSetView(14.425, 40.825, 13);
+const mapCanvasView = new MapSetView(0, 90, 4);
 const basemap = new BaseMapLayer('OSM');
 const osm = basemap.createOSMStandard();
 mapCanvas.addLayer(osm);
 
-const wmsTestSource = new wmsLayer(
-  'Sentinel 2, B12',
-  'https://gis.massimilianomoraca.it/geoserver/MassimilianoMoraca/wms'
+const wfsData = new wfsLayer(
+  'POLYGON',
+  'Buildings'
 );
-const wmsTest = wmsTestSource.createWMSLayer(
-  'wildfires_20170712',
+const vector = wfsData.createWFSLayer(
+  'https://gis.massimilianomoraca.it/geoserver/MassimilianoMoraca/wfs',
+  'geomedia_edificicasalnuovo',
+  'rgba(0, 0, 255, 1.0)',
   null,
-  16,
-  10,
-  0
+  null,
+  0.5,
+  'rgba(0, 255, 0, 1.0)'
 );
-mapCanvas.addLayer(wmsTest);
+mapCanvas.addLayer(vector);
+wfsData.zoomToExtent(50, 50, 50, 50, 5000);

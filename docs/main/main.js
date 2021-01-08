@@ -370,3 +370,157 @@ let wmsLayer = function(layerName, wmsLayerPath) {
 
   }
 };
+//////// Aggiunta WFS
+let wfsLayer = function(
+  vectorType,
+  layerName
+) {
+
+  this.vectorType = vectorType;
+  this.layerName = layerName;
+
+  let wfs;
+
+  return {
+
+    'createWFSLayer': function(
+      wfsLayerPath,
+      wfslayerName,
+      setStrokeColor,
+      setStrokeLineDashLength,
+      setStrokeLineDashSpace,
+      setStrokeWidth,
+      setFillColor
+    ){
+      this.wfsLayerPath = wfsLayerPath;
+      this.wfslayerName = wfslayerName;
+      this.setStrokeColor = setStrokeColor;
+      this.setStrokeLineDashLength = setStrokeLineDashLength;
+      this.setStrokeLineDashSpace = setStrokeLineDashSpace;
+      this.setStrokeWidth = setStrokeWidth;
+      this.setFillColor = setFillColor;
+
+      // Definizione dello stile in base alla
+      // tipologia di geometria
+      stroke = new ol.style.Stroke({
+          color: setStrokeColor,
+          width: setStrokeWidth,
+          lineDash: [setStrokeLineDashLength, setStrokeLineDashSpace],
+          lineCap: 'butt',
+          lineJoin: 'miter'
+      });
+      fill = new ol.style.Fill({
+        color: setFillColor,
+      });
+
+      let style;
+      if (vectorType.toLowerCase() === 'polygon') {
+        style = new ol.style.Style({
+            stroke: stroke,
+            fill: fill
+        });
+      } else if (vectorType.toLowerCase() === 'linestring') {
+        style = new ol.style.Style({
+            stroke: stroke
+        });
+      } else if (vectorType.toLowerCase() === 'point') {
+        style = new ol.style.Style({
+            image: new ol.style.Circle({
+              radius: setStrokeWidth * 5,
+              stroke: stroke,
+              fill: fill
+            })
+        });
+      } else {
+        console.error('Geometry not recognized! Accepted geometries: point, linestring, polygon.');
+      }
+
+      wfs = new ol.layer.Vector({
+        title: layerName,
+        source: new ol.source.Vector(),
+        style: style
+      });
+      /// Invio feature dal WFS ad wfsSource
+      const wfsFeatureRequest = new ol.format.WFS().writeGetFeature({
+        srsName: 'EPSG:3857',
+        featureTypes: [wfslayerName],
+        outputFormat: 'application/json',
+      });
+      async function getFeatureProperties() {
+        let settings = {
+          method: 'POST',
+          body: new XMLSerializer().serializeToString(wfsFeatureRequest),
+        }
+        try {
+          let response = await fetch(wfsLayerPath, settings);
+          if (!response.ok) {
+            throw new Error(`HTTP error!\n Status: ${response.status}\n Type: ${response.type}\n URL: ${response.url}`);
+          } else {
+            let data = await response.text();
+            let json = JSON.parse(data);
+            var features = new ol.format.GeoJSON().readFeatures(json);
+            wfs.getSource().addFeatures(features);
+          }
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      getFeatureProperties();
+
+      return wfs;
+    },
+    /// Zoom alle estensioni del vettore al primo caricamento della mappa
+    'zoomToExtent': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight,
+      durationMilliseconds
+    ){
+
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+      this.durationMilliseconds = durationMilliseconds;
+
+        wfs.getSource().once('change', function(evt) {
+          if (wfs.getSource().getState() === 'ready') {
+            if (wfs.getSource().getFeatures().length > 0) {
+              extent = wfs.getSource().getExtent();
+              options = {
+                size: map.getSize(),
+                padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+                duration: durationMilliseconds
+              }
+              map.getView().fit(extent, options);
+            }
+          }
+        });
+    },
+    /// Zoom alle estensioni del vettore al click sul bottone
+    'zoomOnLayer': function(
+      paddingTop,
+      paddingLeft,
+      paddingBottom,
+      paddingRight,
+      durationMilliseconds
+    ){
+
+      this.paddingTop = paddingTop;
+      this.paddingLeft = paddingLeft;
+      this.paddingBottom = paddingBottom;
+      this.paddingRight = paddingRight;
+      this.durationMilliseconds = durationMilliseconds;
+
+      extent = wfs.getSource().getExtent();
+      options = {
+        size: map.getSize(),
+        padding: [paddingTop, paddingLeft, paddingBottom, paddingRight],
+        duration: durationMilliseconds
+      }
+      map.getView().fit(extent, options);
+    },
+  }
+
+};
