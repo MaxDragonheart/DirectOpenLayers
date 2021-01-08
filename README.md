@@ -49,6 +49,7 @@ Who would like to contribute to the maintance of this library is welcome :)
 - [Zoom on vector source](https://maxdragonheart.github.io/DirectOpenLayers/docs/4-zoom-on-vector-source/index.html)
 - [Lock to extent](https://maxdragonheart.github.io/DirectOpenLayers/docs/5-lock-to-extent/index.html)
 - [Points' clusters](https://maxdragonheart.github.io/DirectOpenLayers/docs/6-points-clusters/index.html)
+- [Manage WMS Source](https://maxdragonheart.github.io/DirectOpenLayers/docs/7-wms-source/index.html)
 
 ## Dependencies
 
