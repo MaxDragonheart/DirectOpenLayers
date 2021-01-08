@@ -17,6 +17,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import Cluster from 'ol/source/Cluster';
 import Text from 'ol/style/Text';
 import {createEmpty, extend} from 'ol/extent';
+import TileWMS from 'ol/source/TileWMS';
 
 let map;
 export function MapInizialized(mapTarget) {
@@ -465,4 +466,66 @@ export function vectorsLayer(
       });
     },
   };
+};
+
+export function wmsLayer(
+  layerName,
+  wmsLayerPath
+) {
+  /*
+  This function allow to visualize WMS service on the map.
+  layerName: string. It is the name that you choose for the WMS resource.
+  wmsLayerPath: string. It is the url of WMS source.
+  */
+  this.layerName = layerName;
+  this.wmsLayerPath = wmsLayerPath;
+
+  let wms;
+
+  return {
+    'createWMSLayer': function(
+      wmslayerName,
+      wmsLayerStyle,
+      setMaxZoom,
+      setMinZoom,
+      setZIndex,
+      setOpacity
+    ) {
+      /*
+      This function create the WMS layer.
+      wmslayerName: string. It is the name of the WMS resource
+      wmsLayerStyle: string. It is the style of the WMS resource
+      setMaxZoom: decimal. It's the max zoom level with which is possible to see the resource.
+      setMinZoom decimal. It's the min zoom level with which is possible to see the resource.
+      setZIndex: integer. It's the the level priority for the resource. The higher it is, the higher the position
+                of the resource in the stack of layers.
+      setOpacity: decimal. It is the opacity of the WMS resource, it'
+                between 0.0 and 1.0.
+      */
+      this.wmslayerName = wmslayerName;
+      this.wmsLayerStyle = wmsLayerStyle;
+      this.setMaxZoom = setMaxZoom;
+      this.setMinZoom = setMinZoom;
+      this.setZIndex = setZIndex;
+      this.setOpacity = setOpacity;
+
+      wms = new TileLayer({
+        title: layerName,
+        source: new TileWMS({
+          url: wmsLayerPath,
+          params: {
+            'LAYERS': wmslayerName,
+            'STYLES': wmsLayerStyle,
+          }
+        }),
+        minZoom: setMinZoom,
+        maxZoom: setMaxZoom,
+        zIndex: setZIndex,
+        opacity: setOpacity
+      });
+      
+      return wms;
+    },
+  }
+
 };

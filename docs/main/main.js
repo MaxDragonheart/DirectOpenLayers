@@ -1,3 +1,4 @@
+//////// Inizializzazione della mappa
 let map;
 function MapInizialized(mapTarget) {
   map = new ol.Map({
@@ -5,6 +6,7 @@ function MapInizialized(mapTarget) {
   });
   return map;
 };
+//////// Definizione della view
 let view;
 function MapSetView(longitude, latitude, zoomLevel, setMaxZoom, setMinZoom) {
   view = new ol.View({
@@ -16,6 +18,8 @@ function MapSetView(longitude, latitude, zoomLevel, setMaxZoom, setMinZoom) {
   map.setView(view);
   return view;
 };
+//////// Aggiunta controlli standard
+// Scale Line
 function MapScaleLine() {
   const scaleLine = new ol.control.ScaleLine({
     className: 'ol-scale-line',
@@ -24,6 +28,7 @@ function MapScaleLine() {
   map.addControl(scaleLine);
   return scaleLine;
 };
+// Full Screen
 function MapFullScreen() {
   const fullScreen = new ol.control.FullScreen({
     className: 'ol-full-screen',
@@ -32,6 +37,7 @@ function MapFullScreen() {
   map.addControl(fullScreen);
   return fullScreen;
 };
+//////// Mappe di sfondo
 function BaseMapLayer(baseMapName) {
   this.baseMapName = baseMapName;
   let empty;
@@ -55,6 +61,7 @@ function BaseMapLayer(baseMapName) {
     }
   }
 };
+//////// Aggiunta vettori
 function vectorsLayer(
   vectorType,
   urlAPI,
@@ -68,7 +75,7 @@ function vectorsLayer(
   let layerVector;
 
   return {
-
+    /// Genera il vettore
     'createVector': function(
       setStrokeColor,
       setStrokeLineDashLength,
@@ -98,7 +105,8 @@ function vectorsLayer(
       fill = new ol.style.Fill({
         color: setFillColor,
       });
-
+      // Definizione dello stile in base alla
+      // tipologia di geometria
       let style;
       if (vectorType.toLowerCase() === 'polygon') {
         style = new ol.style.Style({
@@ -134,6 +142,7 @@ function vectorsLayer(
       });
       return layerVector;
     },
+    /// Zoom alle estensioni del vettore al primo caricamento della mappa
     'zoomToExtent': function(
       paddingTop,
       paddingLeft,
@@ -162,6 +171,7 @@ function vectorsLayer(
         }
       });
     },
+    /// Bloccare la mappa all'estensione del layer
     'lockToExtent': function(
       paddingTop,
       paddingLeft,
@@ -194,6 +204,7 @@ function vectorsLayer(
         }
       });
     },
+    /// Genera un cluster vector
     'createCluster': function(
       clusterDistance,
       colorMaxCluster,
@@ -276,6 +287,7 @@ function vectorsLayer(
       });
       return layerVector;
     },
+    /// Zoom-in sul singolo cluster
     'zoomOnCluster': function(
       paddingTop,
       paddingLeft,
@@ -312,4 +324,49 @@ function vectorsLayer(
       });
     },
   };
+};
+//////// 6 - Aggiunta WMS
+let wmsLayer = function(layerName, wmsLayerPath) {
+
+  this.layerName = layerName;
+  this.wmsLayerPath = wmsLayerPath;
+
+  let wms;
+  let legendJSON;
+
+  return {
+
+    'createWMSLayer': function(
+      wmslayerName,
+      wmsLayerStyle,
+      setMaxZoom,
+      setMinZoom,
+      setZIndex,
+      setOpacity
+    ) {
+      this.wmslayerName = wmslayerName;
+      this.wmsLayerStyle = wmsLayerStyle;
+      this.setMaxZoom = setMaxZoom;
+      this.setMinZoom = setMinZoom;
+      this.setZIndex = setZIndex;
+      this.setOpacity = setOpacity;
+
+      wms = new ol.layer.Tile({
+        title: layerName,
+        source: new ol.source.TileWMS({
+          url: wmsLayerPath,
+          params: {
+            'LAYERS': wmslayerName,
+            'STYLES': wmsLayerStyle,
+          }
+        }),
+        minZoom: setMinZoom,
+        maxZoom: setMaxZoom,
+        zIndex: setZIndex,
+        opacity: setOpacity
+      });
+      return wms;
+    },
+
+  }
 };

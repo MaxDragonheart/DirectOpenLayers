@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="icon" href="../directopenlayers-logo.ico" type="image/gif">
+
+    <meta name="robots" content="index, follow" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/css/ol.css" type="text/css">
+    <link rel="stylesheet" href="../main/main.css" type="text/css">
+
+    <script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.5.0/build/ol.js"></script>
+    <script src="../main/main.js"></script>
+    <title>Manage WMS Source | DirectOpenLayers</title>
+  </head>
+  <body>
+    <div class="menu">
+      <a class="directopenlayers" href="https://maxdragonheart.github.io/DirectOpenLayers/">DirectOpenLayers</a>
+    </div>
+    <div id="map" class="map"></div>
+    <div class="code">
+      <p><strong>index.js</strong></p>
+      <script src="https://gist.github.com/MaxDragonheart/5557bc9f98f893461a0cda39da706977.js"></script>
+    </div>
+    <script type="text/javascript">
+    const mapCanvas = new MapInizialized('map');
+    const mapCanvasView = new MapSetView(14.425, 40.825, 13);
+    const basemap = new BaseMapLayer('OSM');
+    const osm = basemap.createOSMStandard();
+    mapCanvas.addLayer(osm);
+
+    const wmsTestSource = new wmsLayer(
+      'Sentinel 2, B12',
+      'https://gis.massimilianomoraca.it/geoserver/MassimilianoMoraca/wms'
+    );
+    const wmsTest = wmsTestSource.createWMSLayer(
+      'wildfires_20170712',
+      null,
+      16,
+      10,
+      0
+    );
+    mapCanvas.addLayer(wmsTest);
+    </script>
+  </body>
+</html>

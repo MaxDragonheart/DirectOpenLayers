@@ -1,25 +1,24 @@
 import './style.css';
 import {
   MapInizialized, MapSetView, BaseMapLayer,
-  MapFullScreen, MapScaleLine, vectorsLayer
+  wmsLayer
 } from './directopenlayers';
 
 const mapCanvas = new MapInizialized('map');
-const mapCanvasView = new MapSetView(14.350, 40.905, 3);
+const mapCanvasView = new MapSetView(14.425, 40.825, 13);
 const basemap = new BaseMapLayer('OSM');
 const osm = basemap.createOSMStandard();
 mapCanvas.addLayer(osm);
 
-const pointData = new vectorsLayer(
-  'point',
-  'https://massimilianomoraca.it/api/geomedia/random-points/',
-  'Points'
+const wmsTestSource = new wmsLayer(
+  'Sentinel 2, B12',
+  'https://gis.massimilianomoraca.it/geoserver/MassimilianoMoraca/wms'
 );
-const renderPointData = pointData.createCluster(
-  50, 'rgba(192,0,0,1.0)', 'rgba(255,128,0,1.0)', 'rgba(0,128,0,1.0)',
-  'rgba(0,0,255,1.0)', 'rgba(255,255,255,0.5)', 0, 0,
-  5, 'rgba(255,255,255,1.0)', 18, 0,
-  99
+const wmsTest = wmsTestSource.createWMSLayer(
+  'wildfires_20170712',
+  null,
+  16,
+  10,
+  0
 );
-mapCanvas.addLayer(renderPointData);
-pointData.zoomOnCluster(100, 100, 100, 100, 5000);
+mapCanvas.addLayer(wmsTest);
